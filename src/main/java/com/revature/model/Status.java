@@ -1,2 +1,5 @@
-package com.revature.model;public enum Status {
+package com.revature.model;
+
+public enum Status {
+    ACCEPTED, DENIED, OPEN;
 }
