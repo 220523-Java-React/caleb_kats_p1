@@ -14,7 +14,15 @@ import java.util.List;
 import java.util.Locale;
 
 public class UserController {
-    UserService userService = new UserService();
+    UserService userService;
+
+    public UserController(){
+        userService = new UserService();
+    }
+
+    public UserController(UserService userService){
+        this.userService = new UserService();
+    }
 
     public Handler getAllUsers = ctx -> {
         List<User> users = userService.getAllUsers();

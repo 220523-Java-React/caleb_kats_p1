@@ -12,33 +12,24 @@ import java.util.List;
 
 public class CarRepository implements DAO<Car> {
 
-    private List<Car> cars;
-
-    public CarRepository(){
-        cars = new ArrayList<>();
-    }
-
-    public CarRepository(List<Car> cars){
-        this.cars = cars;
-    }
-
     @Override
     public Car create(Car car) {
-        String sql = "insert into cars(make, model, color) values(?,?,?)";
+        String sql = "insert into cars(id, make, model, color, availability) values(?,?,?,?,?)";
 
         try(Connection connection = ConnectionUtility.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.setString(1, car.getMake().name());
-            stmt.setString(2, car.getModel().name());
-            stmt.setString(3, car.getColor().name());
-            stmt.setString(4, car.getAvailability().name());
-
+            stmt.setInt(1, car.getId());
+            stmt.setString(2, car.getMake().name());
+            stmt.setString(3, car.getModel().name());
+            stmt.setString(4, car.getColor().name());
+            stmt.setString(5, car.getAvailability().name());
 
             int success = stmt.executeUpdate();
 
             if (success == 1) {
                 return car;
             }
+
         }catch (SQLException e) {
             e.printStackTrace();
         }
@@ -56,7 +47,7 @@ public class CarRepository implements DAO<Car> {
 
             while (results.next()) {
                 cars.add(new Car().
-                        setId(results.getInt("car_id")).
+                        setId(results.getInt("id")).
                         setMake(Make.valueOf(results.getString("make"))).
                         setModel(Model.valueOf(results.getString("model"))).
                         setColor(Color.valueOf(results.getString("color"))).
@@ -70,7 +61,8 @@ public class CarRepository implements DAO<Car> {
 
     @Override
     public Car getById(int id) {
-        String sql = "select * from cars where car_id = " + id;
+        List<Car> cars = new ArrayList<>();
+        String sql = "select * from cars where id = " + id;
 
         try(Connection connection = ConnectionUtility.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
@@ -79,7 +71,7 @@ public class CarRepository implements DAO<Car> {
             if (results.next()) {
                 Car car = new Car();
                 cars.add(car.
-                        setId(results.getInt("car_id")).
+                        setId(results.getInt("id")).
                         setMake(Make.valueOf(results.getString("make"))).
                         setModel(Model.valueOf(results.getString("model"))).
                         setColor(Color.valueOf(results.getString("color"))).
@@ -95,7 +87,7 @@ public class CarRepository implements DAO<Car> {
 
     @Override
     public Car update(Car car) {
-        String sql = "update cars set make = ?, model = ?, color = ?, availability = ? where car_id = ?";
+        String sql = "update cars set make = ?, model = ?, color = ?, availability = ? where id = ?";
 
         try(Connection connection = ConnectionUtility.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
@@ -118,7 +110,7 @@ public class CarRepository implements DAO<Car> {
 
     @Override
     public boolean deleteById(int id) {
-        String sql = "delete from cars where car_id = " + id;
+        String sql = "delete from cars where id = " + id;
 
         try(Connection connection = ConnectionUtility.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);

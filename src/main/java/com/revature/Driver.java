@@ -59,23 +59,15 @@ public class Driver {
                 });
             });
             path("offers", () -> {
-                path("create", () -> {
-                    post(offerController.createNewOffer);
-                });
-                path("getAll", () -> {
-                    get(offerController.getAllOffers);
-                });
+                post(offerController.createNewOffer);
+                get(offerController.getAllOffers);
                 path("{id}", () -> {
                     get(offerController.getOfferById);
                     put(offerController.updateOfferById);
                     delete(offerController.deleteOfferById);
-                    path("approved", () -> {
-                       //get(offerController.getApprovedOffers)
-                    });
-                    path("denied", () -> {
-                       //get(offerController.getDeniedOffers)
-                    });
-                    path("open", () -> {
+                });
+                path("open", () -> {
+                    path("{id}", () -> {
                         get(offerController.getOpenOffersByUserId);
                     });
                 });

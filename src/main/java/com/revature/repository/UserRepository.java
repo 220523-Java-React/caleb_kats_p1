@@ -9,9 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserRepository implements DAO<User>{
+
     @Override
     public User create(User user){
-        String sql = "Insert into users{id, fName, lName, username, password, role) values(?,?,?,?,?,?)";
+        String sql = "insert into users(user_id, first_name, last_name, username, password, role) values(?,?,?,?,?,?)";
 
         try(Connection connection = ConnectionUtility.getConnection()){
             PreparedStatement stmt = connection.prepareStatement(sql);
@@ -45,7 +46,7 @@ public class UserRepository implements DAO<User>{
 
             while(result.next()){
                 users.add(new User()
-                        .setId(result.getInt("id"))
+                        .setId(result.getInt("user_id"))
                         .setfName(result.getString("first_name"))
                         .setlName(result.getString("last_name"))
                         .setUsername(result.getString("username"))
@@ -140,9 +141,11 @@ public class UserRepository implements DAO<User>{
 
         try(Connection connection = ConnectionUtility.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
-            int result = stmt.executeUpdate();
+            ResultSet results = stmt.executeQuery();
 
-            return result == 1;
+            if(results.next()){
+                return true;
+            }
         }catch (SQLException e){
             e.printStackTrace();
         }

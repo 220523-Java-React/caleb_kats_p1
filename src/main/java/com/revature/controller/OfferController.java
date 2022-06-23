@@ -19,7 +19,12 @@ public class OfferController {
     };
 
     public Handler createNewOffer = ctx -> {
-
+        Offer offer = ctx.bodyAsClass(Offer.class);
+        try {
+            ctx.status(HttpCode.CREATED).json(offerService.createNewOffer(offer));
+        }catch (NullPointerException | NumberFormatException e){
+            ctx.status(HttpCode.BAD_REQUEST).result("Could not create user");
+        }
     };
 
     public Handler getOfferById = ctx -> {
@@ -31,7 +36,21 @@ public class OfferController {
     };
 
     public Handler deleteOfferById = ctx -> {
+        String param = ctx.pathParam("id");
+        int id = 0;
 
+        try{
+            id = Integer.parseInt(param);
+            boolean result = offerService.delete(id);
+            if (result) {
+                ctx.status(HttpCode.OK).result("Offer " + id + " has been deleted");
+            }
+            else {
+                ctx.status(HttpCode.BAD_REQUEST).result("Offer " + id + " could not be deleted");
+            }
+        }catch (NullPointerException e) {
+            ctx.status(HttpCode.NOT_FOUND).result("Offer " + id + " could not found");
+        }
     };
 
     public Handler getOpenOffersByUserId = ctx -> {

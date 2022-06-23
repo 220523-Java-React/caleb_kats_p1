@@ -55,6 +55,7 @@ public class OfferRepository implements DAO<Offer> {
 
             while(result.next()){
                 offers.add(new Offer()
+                        .setOfferId(result.getInt("offer_id"))
                         .setStatus(Status.valueOf(result.getString("status")))
                         .setUserId(result.getInt("user_id"))
                         .setCarId(result.getInt("car_id")));
@@ -78,7 +79,7 @@ public class OfferRepository implements DAO<Offer> {
                 offers.add(offer.
                         setStatus(Status.valueOf(result.getString("status"))).
                         setUserId(result.getInt("user_id")).
-                        setCarId(result.getInt("car_id")));
+                        setCarId(result.getInt("id")));
 
                 return offer;
             }
@@ -91,7 +92,7 @@ public class OfferRepository implements DAO<Offer> {
 
     @Override
     public Offer update(Offer offer) {
-        String sql = "update offers set status = ?, car_id = ?, user_id = ? where offer_id = ?";
+        String sql = "update offers set status = ?, id = ?, user_id = ? where offer_id = ?";
 
         try(Connection connection = ConnectionUtility.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -117,11 +118,11 @@ public class OfferRepository implements DAO<Offer> {
 
         try (Connection connection = ConnectionUtility.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
-            ResultSet result = stmt.executeQuery();
+            stmt.setInt(1, id);
 
-            if(result.next()) {
-                return true;
-            }
+            int success = stmt.executeUpdate();
+
+            return success == 1;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -160,7 +161,7 @@ public class OfferRepository implements DAO<Offer> {
                 offers.add(new Offer().
                         setStatus(Status.valueOf(result.getString("status"))).
                         setUserId(result.getInt("user_id")).
-                        setCarId(result.getInt("car_id")));
+                        setCarId(result.getInt("id")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -182,7 +183,7 @@ public class OfferRepository implements DAO<Offer> {
                 offers.add(new Offer().
                         setStatus(Status.valueOf(results.getString("status"))).
                         setUserId(results.getInt("user_id")).
-                        setCarId(results.getInt("car_id")));
+                        setCarId(results.getInt("id")));
 
             }
 
