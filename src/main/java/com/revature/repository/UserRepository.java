@@ -1,8 +1,11 @@
 package com.revature.repository;
 
+import com.revature.model.Car;
 import com.revature.model.Role;
 import com.revature.model.User;
 import com.revature.util.ConnectionUtility;
+import io.javalin.http.Handler;
+import io.javalin.http.HttpCode;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -63,52 +66,22 @@ public class UserRepository implements DAO<User>{
     @Override
     public User getById(int id){
         List<User> users = new ArrayList<>();
-        String sql = "select * from users where id = ?";
+        String sql = "select * from users where user_id = " + id;
 
         try(Connection connection = ConnectionUtility.getConnection()){
             PreparedStatement stmt = connection.prepareStatement(sql);
             ResultSet result = stmt.executeQuery();
 
-           if(result.next()) {
-               User user = new User();
-               users.add(user
-                       .setId(result.getInt("id"))
-                       .setfName(result.getString("first_name"))
-                       .setlName(result.getString("last_name"))
-                       .setUsername(result.getString("username"))
-                       .setPassword(result.getString("password"))
-                       .setRole(Role.valueOf(result.getString("role"))));
-
-               return user;
-
-           }
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-        return null;
-    }
-    public User getByUsername(String username){
-        List<User> users = new ArrayList<>();
-        String sql = "select * from users where username = ?";
-
-        try(Connection connection = ConnectionUtility.getConnection()){
-            PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.setString(1, username);
-
-            ResultSet result = stmt.executeQuery();
-
-            if(result.next()) {
+            if (result.next()) {
                 User user = new User();
                 users.add(user
-                        .setId(result.getInt("id"))
+                        .setId(result.getInt("user_id"))
                         .setfName(result.getString("first_name"))
                         .setlName(result.getString("last_name"))
                         .setUsername(result.getString("username"))
                         .setPassword(result.getString("password"))
                         .setRole(Role.valueOf(result.getString("role"))));
-
                 return user;
-
             }
         }catch(SQLException e){
             e.printStackTrace();
@@ -119,7 +92,7 @@ public class UserRepository implements DAO<User>{
     @Override
     public User update(User user){
 
-        String sql = "update users set first_name = ?, last_name = ?, username = ?, password = ? where id = ?";
+        String sql = "update users set first_name = ?, last_name = ?, username = ?, password = ?, role = ? where user_id = ?";
 
         try(Connection connection = ConnectionUtility.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
@@ -127,8 +100,14 @@ public class UserRepository implements DAO<User>{
             stmt.setString(2, user.getlName());
             stmt.setString(3, user.getUsername());
             stmt.setString(4, user.getPassword());
-            stmt.setString(5, Integer.toString(user.getId()));
-            stmt.setString(6, user.getRole().name());
+            stmt.setString(5, user.getRole().name());
+            stmt.setInt(6, user.getId());
+
+            int success = stmt.executeUpdate();
+
+            if(success == 1){
+                return user;
+            }
         }catch(SQLException e) {
             e.printStackTrace();
         }
@@ -136,17 +115,15 @@ public class UserRepository implements DAO<User>{
     }
 
     @Override
-    public boolean deleteById(int id){
-        String sql = "delete from users where id = " + id;
+    public boolean deleteById(int id) {
+        String sql = "delete from users where user_id = " + id;
 
-        try(Connection connection = ConnectionUtility.getConnection()) {
+        try (Connection connection = ConnectionUtility.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
-            ResultSet results = stmt.executeQuery();
+            int success = stmt.executeUpdate();
 
-            if(results.next()){
-                return true;
-            }
-        }catch (SQLException e){
+            return success == 1;
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;

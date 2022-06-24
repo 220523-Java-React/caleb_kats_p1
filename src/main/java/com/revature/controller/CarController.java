@@ -55,7 +55,7 @@ public class CarController {
         try{
             id = Integer.parseInt(param);
             boolean result = carService.deleteCarById(id);
-            if (result) {
+            if (result == true) {
                 ctx.status(HttpCode.OK).result("Car " + id + " has been deleted");
             }
             else {

@@ -5,9 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="03cc42f1-8ddc-419e-8dc3-6cbe4240f7e6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/db-config.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/Driver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/Driver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/controller/CarController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/controller/CarController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/controller/OfferController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/controller/OfferController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/controller/UserController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/model/Offer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/model/Offer.java" afterDir="false" />

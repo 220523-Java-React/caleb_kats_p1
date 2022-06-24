@@ -114,11 +114,9 @@ public class CarRepository implements DAO<Car> {
 
         try(Connection connection = ConnectionUtility.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
-            ResultSet results = stmt.executeQuery();
+            int success = stmt.executeUpdate();
 
-            if(results.next()){
-                return true;
-            }
+            return success == 1;
         }catch(SQLException e){
             e.printStackTrace();
         }

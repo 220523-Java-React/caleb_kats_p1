@@ -92,15 +92,17 @@ public class OfferRepository implements DAO<Offer> {
 
     @Override
     public Offer update(Offer offer) {
-        String sql = "update offers set status = ?, id = ?, user_id = ? where offer_id = ?";
+        String sql = "update offers set status = ?, car_id = ?, user_id = ? where offer_id = ?";
 
         try(Connection connection = ConnectionUtility.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, offer.getStatus().name());
-            statement.setInt(2, offer.getCarId());
-            statement.setInt(3, offer.getUserId());
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, offer.getStatus().name());
+            stmt.setInt(2, offer.getCarId());
+            stmt.setInt(3, offer.getUserId());
+            stmt.setInt(4, offer.getOfferId());
 
-            int success = statement.executeUpdate();
+
+            int success = stmt.executeUpdate();
 
             if (success == 1) {
                 return offer;
@@ -118,7 +120,6 @@ public class OfferRepository implements DAO<Offer> {
 
         try (Connection connection = ConnectionUtility.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.setInt(1, id);
 
             int success = stmt.executeUpdate();
 

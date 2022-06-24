@@ -23,7 +23,7 @@ public class Driver {
 
         app.routes(() -> {
             path("/", () -> {
-               get(ctx -> ctx.result("Welcome to Crazy Caleb's Car Dealership"));
+                get(ctx -> ctx.result("Welcome to Crazy Caleb's Car Dealership"));
             });
             path("users", () -> {
                 get(userController.getAllUsers);
@@ -32,9 +32,6 @@ public class Driver {
                     get(userController.getUserById);
                     put(userController.updateUserById);
                     delete(userController.deleteUserById);
-                });
-                path("{role}", () -> {
-                    get(userController.getUserByRole);
                 });
             });
             path("cars", () -> {
@@ -45,30 +42,13 @@ public class Driver {
                     put(carController.updateCarById);
                     delete(carController.deleteCarById);
                 });
-                path("{color}", () -> {
-                    get(carController.getCarByColor);
-                });
-                path("{make}", () -> {
-                    get(carController.getCarByMake);
-                });
-                path("{model}", () -> {
-                    get(carController.getCarByModel);
-                });
-                path("{availability}", () -> {
-                    get(carController.getCarByAvailability);
-                });
-            });
-            path("offers", () -> {
-                post(offerController.createNewOffer);
-                get(offerController.getAllOffers);
-                path("{id}", () -> {
-                    get(offerController.getOfferById);
-                    put(offerController.updateOfferById);
-                    delete(offerController.deleteOfferById);
-                });
-                path("open", () -> {
+                path("offers", () -> {
+                    post(offerController.createNewOffer);
+                    get(offerController.getAllOffers);
                     path("{id}", () -> {
-                        get(offerController.getOpenOffersByUserId);
+                        get(offerController.getOfferById);
+                        put(offerController.updateOfferById);
+                        delete(offerController.deleteOfferById);
                     });
                 });
             });

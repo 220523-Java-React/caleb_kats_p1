@@ -39,7 +39,7 @@ public class UserController {
     };
 
     public Handler getUserById = ctx -> {
-        String param = ctx.pathParam("user_id");
+        String param = ctx.pathParam("id");
         int id = 0;
         try {
             id = Integer.parseInt(param);
@@ -58,21 +58,21 @@ public class UserController {
     };
 
     public Handler deleteUserById = ctx -> {
-      String param = ctx.pathParam("id");
-      int id = 0;
+        String param = ctx.pathParam("id");
+        int id = 0;
 
-      try{
-          id = Integer.parseInt(param);
-          boolean result = userService.deleteUserById(id);
-          if (result) {
-              ctx.status(HttpCode.OK).result("User " + id + " has been deleted");
-          }
-          else {
-              ctx.status(HttpCode.BAD_REQUEST).result("User " + id + " could not be deleted");
-          }
-      }catch (NullPointerException e) {
-          ctx.status(HttpCode.NOT_FOUND).result("User " + id + " could not found");
-      }
+        try{
+            id = Integer.parseInt(param);
+            boolean result = userService.deleteUserById(id);
+            if (result == true) {
+                ctx.status(HttpCode.OK).result("User " + id + " has been deleted");
+            }
+            else {
+                ctx.status(HttpCode.BAD_REQUEST).result("User " + id + " could not be deleted");
+            }
+        }catch (NullPointerException e) {
+            ctx.status(HttpCode.NOT_FOUND).result("User " + id + " could not found");
+        }
     };
 
     public Handler getUserByRole = ctx -> {
